@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .warning {
+            color: red;
+            font-size: 20px;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+<div th:if="${not #lists.isEmpty(del)}" class="warning" th:text="${del}"></div>
+<div th:if="${not #lists.isEmpty(error)}" class="warning" th:text="${error}"></div>
+<h1>Danh sách Category</h1>
+<a th:href="@{/category/show-form-create-cat}">Thêm mới category</a><br>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Hãng</th>
+        <th>Chức năng</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="c : ${list}">
+        <td th:text="${c.id}"></td>
+        <td th:text="${c.name}"></td>
+        <td>
+            <a th:href="@{/category/delete-cat/{id}(id=${c.id})}" th:data="|Ban co chac xoa ${c.name} khong?|"
+               onclick="return confirm(this.getAttribute('data'));">Xóa</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+<a th:href="@{/}">Tro ve trang chu</a><br>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <style>
+        .pagination {
+            display: flex;
+            justify-content: left;
+            list-style: none;
+            padding: 0;
+        }
+        .pagination li {
+            margin: 0 5px;
+        }
+        .pagination li a {
+            display: block;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: rgba(82, 137, 170, 0.54);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .pagination li.active a {
+            background-color: rgba(103, 143, 168, 0.62);
+            color: white;
+            border: 1px solid rgba(82, 137, 170, 0.62);
+        }
+    </style>
+
+</head>
+<body>
+<h3>Tìm kiếm sản phẩm</h3>
+<form th:action="@{/}" method="get">
+    <input type="text" name="search" th:value="${search}" placeholder="Tìm kiếm theo tên">
+    <input type="number" name="maxPrice" th:value="${maxPrice}" placeholder="Tìm kiếm theo giá">
+    <select name="categoryId" th:value="${categoryId}" class="form-control">
+        <option value="" disabled selected>Chọn loại sản phẩm</option>
+        <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">
+        </option>
+    </select>
+    <button type="submit">Tìm</button>
+</form>
+<br>
+<a th:href="@{/show-create}" >Thêm sản phẩm</a>
+<table border = 1 >
+    <thead>
+    <tr>
+        <th>STT</th>
+        <th>Tên sản phẩm</th>
+        <th>Giá bắt đầu</th>
+        <th>Loại sản phẩm</th>
+        <th>Hành động</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="p, loop: ${list}">
+        <td th:text="${loop.count}"></td>
+        <td th:text="${p.name}"></td>
+        <td th:text="${p.price}"></td>
+        <td th:text="${p.category.name}"></td>
+        <td>
+            <a th:href="@{show-form-edit/{id}(id=${p.id})}">Sửa</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div>
+    <ul class="pagination">
+        <li th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
+            th:classappend="${pageNum == currentPage} ? 'active'">
+            <a th:href="@{/(size=${size}, page=${pageNum}, search=${search})}" th:text="${pageNum + 1}"></a>
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>
